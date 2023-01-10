@@ -1,6 +1,13 @@
+import React from "react";
+import Desk from "./components/desk";
+import BallsContainer from "./components/balls-container";
+import "../style/style.scss";
+
 const App = () => (
   <div>
-      App
+    <Desk>
+      <BallsContainer />
+    </Desk>
   </div>
 );
 
