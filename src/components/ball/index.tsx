@@ -7,21 +7,37 @@ import styles from "./styles.module.scss";
 
 type Props = PropsWithChildren & React.CSSProperties & { speed: number, alpha: number }
 
+type Coordinates = {
+  x: number;
+  y: number;
+  xD: 1 | -1;
+  yD: 1 | -1;
+}
+
+const initialCoordinates: Coordinates = {
+  x: 0, y: 0, xD: 1, yD: 1
+};
+
 const Ball = (props: Props) => {
   const {
     width, height, backgroundColor, speed, alpha, children,
   } = props;
 
-  const [st, setSt] = useState<boolean>(false);
+  const [coordinates, setCoordinates] = useState<Coordinates>(initialCoordinates);
+  const [showContextMenu, setShowContextMenu] = useState<boolean>(false);
   const [selfRef, setSelfRef] = useCustomRef<HTMLDivElement>();
   const isPaused$ = useMemo(() => new BehaviorSubject(false), []);
 
   useEffect(() => {
-    let currentX = 0;
-    let currentY = 0;
+    const {
+      x, y, xD, yD
+    } = coordinates;
 
-    let xDirect = 1;
-    let yDirect = 1;
+    let currentX = x;
+    let currentY = y;
+
+    let xDirect = xD;
+    let yDirect = yD;
 
     const xOffset = Math.abs(speed * Math.cos(alpha));
     const yOffset = Math.abs(speed * Math.sin(alpha));
@@ -33,7 +49,7 @@ const Ball = (props: Props) => {
         animation: animation$,
         isPaused: isPaused$,
       }).pipe(
-        filter(({ isPaused }) => !isPaused),
+        filter(({ isPaused }) => !isPaused && !showContextMenu),
       ).subscribe({
         next: ({ animation: { size } }) => {
           const { width: wm = 500, height: hm } = size;
@@ -49,16 +65,22 @@ const Ball = (props: Props) => {
       });
     }
 
-    return () => sub?.unsubscribe();
-  }, [selfRef]);
-
-  console.log(st);
+    return () => {
+      setCoordinates({
+        x: currentX,
+        y: currentY,
+        xD: xDirect,
+        yD: yDirect
+      });
+      sub?.unsubscribe();
+    };
+  }, [selfRef, showContextMenu]);
 
   return (
     <div
       onMouseEnter={() => isPaused$.next(true)}
       onMouseLeave={() => isPaused$.next(false)}
-      onClick={() => setSt((prev) => !prev)}
+      onClick={() => setShowContextMenu((prev) => !prev)}
       ref={setSelfRef}
       className={styles.ball}
       style={{
@@ -66,7 +88,7 @@ const Ball = (props: Props) => {
       }}
     >
       {children}
-      {st && (
+      {showContextMenu && (
         <div>
           <ul>
             <li>a</li>

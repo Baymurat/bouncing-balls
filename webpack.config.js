@@ -6,18 +6,18 @@ module.exports = {
   entry: {
     main: "./src/index.tsx"
   },
+  
   mode: "development",
   output: {
     path: path.resolve(__dirname, "./dist"),
     filename: "[name]-[hash].js",
   },
-  // target: 'web',
+  devtool: "source-map",
   devServer: {
     port: "3000",
     static: {
       directory: path.join(__dirname, "public")
     },
-    open: true,
     hot: true,
     liveReload: true,
   },
