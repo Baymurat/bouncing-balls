@@ -1,24 +1,24 @@
-import { Ball as BallType, IThread } from "../types/types";
-import { interval, Subject, takeUntil, animationFrameScheduler } from "rxjs";
-
-const interval$ = interval(0, animationFrameScheduler);
-const _broadcast: Subject<number> = new Subject();
-
-interval$.subscribe(_broadcast);
+import { Ball as BallType, IThread, BallRunType } from "../types/types";
+import { combineLatest, interval, Subject, takeUntil, animationFrameScheduler } from "rxjs";
+import { resizeHelper } from "./resizeHelper";
 
 abstract class Thread implements IThread {
-  private interval$ = interval$;
+  private static _animationInterval$ = interval(0, animationFrameScheduler);
+  protected static _broadcast: Subject<number> = new Subject();
+  static {
+    Thread._animationInterval$.subscribe(Thread._broadcast);
+  }
+
   private stop$!: Subject<boolean>;
-  private _broadcast: Subject<number> = _broadcast;
 
   constructor() {
     this.stop$ = new Subject<boolean>();
   }
 
-  public abstract run: () => void;
+  public abstract run(context: unknown): void;
 
   start() {
-    this._broadcast.pipe(
+    Thread._broadcast.pipe(
       takeUntil(this.stop$)
     ).subscribe(this.run);
   }
@@ -56,20 +56,28 @@ class BallThread extends Thread {
     this.yD = 1;
   }
 
-  public run = () => {
-    const {width, height} = this.ball;
-
-    const size = { width: 500, height: 500 };
-    const { width: wm = 500, height: hm } = size;
+  public run(context: BallRunType) {
+    const { containerSize } = context;
+    
+    const { width: containerWidth = 500, height: containerHeight } = containerSize;
+    const { width: ballWidth, height: ballHeight } = this.ball;
 
     this.x += this.xD * this.xOffset;
     this.y += this.yD * this.yOffset;
 
-    this.xD = this.x + (width as number) >= wm ? -1 : this.x <= 1 ? 1 : this.xD;
-    this.yD = this.y + (height as number) >= hm ? -1 : this.y <= 1 ? 1 : this.yD;
-          
-    this.ballDiv.style.transform = `translate3d(${this.x}px, ${this.y}px, 0)`;
-  };
+    this.xD = this.x + (ballWidth as number) >= containerWidth ? -1 : this.x <= 1 ? 1 : this.xD;
+    this.yD = this.y + (ballHeight as number) >= containerHeight ? -1 : this.y <= 1 ? 1 : this.yD;
 
+    this.ballDiv.style.transform = `translate3d(${this.x}px, ${this.y}px, 0)`;
+  }
+
+  public start() {
+    combineLatest({
+      animation: BallThread._broadcast,
+      containerSize: resizeHelper.size$
+    }).subscribe({
+      next: (v) => this.run(v)
+    });
+  }
 }
 export { Thread, BallThread };
