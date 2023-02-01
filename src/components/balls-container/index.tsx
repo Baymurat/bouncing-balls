@@ -1,12 +1,13 @@
-import React, { useEffect, useState, useLayoutEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { map } from "rxjs/operators";
 import styles from "./styles.module.scss";
-import Ball from "../ball";
 import { resizeHelper } from "../../helpers/resizeHelper";
 import { generateRandomBall } from "../../helpers/generateBall";
 import { useCustomRef } from "../../helpers/hooks";
 import { Ball as BallType } from "../../types/types";
 import { animationInstance } from "../../helpers/animation";
+import BallV2 from "../ball-v2";
+import { BallThread } from "../../helpers/thread";
 
 const BallsContainer = () => {
   const [balls, setBalls] = useState<BallType[]>([]);
@@ -65,20 +66,23 @@ const BallsContainer = () => {
       </button>
 
       <div ref={setSelfRef} className={styles.ballsContainer}>
-        {balls.map(({
-          width, height, speed, alpha, color, word, id,
-        }) => (
-          <Ball
-            key={id}
-            width={width}
-            height={height}
-            speed={speed}
-            alpha={alpha}
-            backgroundColor={color}
-          >
-            {word}
-          </Ball>
-        ))}
+        {
+          balls.map((ball) => (
+            <BallV2
+              key={ball.id}
+              width={ball.width}
+              height={ball.height}
+              backgroundColor={ball.color}
+              onMount={(ref) => {
+                if (ref) {
+                  new BallThread(ref, ball).start();
+                }
+              }}
+            >
+              {ball.word}
+            </BallV2>
+          ))
+        }
       </div>
     </div>
   );

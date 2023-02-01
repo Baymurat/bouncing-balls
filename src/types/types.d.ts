@@ -29,3 +29,9 @@ export interface Animation {
   clearDesk: () => void;
   addBall: () => void;
 }
+
+export interface IThread {
+  start: () => void;
+  pause: () => void;
+  stop: () => void;
+}
