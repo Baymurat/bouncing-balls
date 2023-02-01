@@ -9,7 +9,7 @@ abstract class Thread implements IThread {
     Thread._animationInterval$.subscribe(Thread._broadcast);
   }
 
-  private stop$!: Subject<boolean>;
+  protected stop$!: Subject<boolean>;
 
   constructor() {
     this.stop$ = new Subject<boolean>();
@@ -75,7 +75,9 @@ class BallThread extends Thread {
     combineLatest({
       animation: BallThread._broadcast,
       containerSize: resizeHelper.size$
-    }).subscribe({
+    }).pipe(
+      takeUntil(this.stop$)
+    ).subscribe({
       next: (v) => this.run(v)
     });
   }

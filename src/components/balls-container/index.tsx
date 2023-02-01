@@ -75,7 +75,9 @@ const BallsContainer = () => {
               backgroundColor={ball.color}
               onMount={(ref) => {
                 if (ref) {
-                  new BallThread(ref, ball).start();
+                  const ballThread = new BallThread(ref, ball);
+                  ballThread.start(); 
+                  return ballThread;
                 }
               }}
             >
