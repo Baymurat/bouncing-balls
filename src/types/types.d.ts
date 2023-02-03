@@ -40,3 +40,8 @@ type BallRunType = {
   animation: number;
   containerSize: ResizeEmission
 }
+
+export type Middleware = { 
+  name: string;
+  observable: Observable<unknown>
+}

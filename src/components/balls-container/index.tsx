@@ -76,6 +76,10 @@ const BallsContainer = () => {
               onMount={(ref) => {
                 if (ref) {
                   const ballThread = new BallThread(ref, ball);
+                  ballThread.addMiddleware({
+                    name: "containerSize",
+                    observable:  resizeHelper.size$
+                  });
                   ballThread.start(); 
                   return ballThread;
                 }

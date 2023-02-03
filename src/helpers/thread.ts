@@ -1,9 +1,10 @@
-import { Ball as BallType, IThread, BallRunType } from "../types/types";
+import { Ball as BallType, IThread, BallRunType, Middleware } from "../types/types";
 import { combineLatest, interval, Subject, takeUntil, animationFrameScheduler } from "rxjs";
-import { resizeHelper } from "./resizeHelper";
 
 abstract class Thread implements IThread {
   private static _animationInterval$ = interval(0, animationFrameScheduler);
+  private _middlewares: Middleware[];
+
   protected static _broadcast: Subject<number> = new Subject();
   static {
     Thread._animationInterval$.subscribe(Thread._broadcast);
@@ -13,14 +14,26 @@ abstract class Thread implements IThread {
 
   constructor() {
     this.stop$ = new Subject<boolean>();
+    this._middlewares = [];
   }
 
   public abstract run(context: unknown): void;
 
   start() {
-    Thread._broadcast.pipe(
-      takeUntil(this.stop$)
-    ).subscribe(this.run);
+    const animnation$ = Thread._broadcast.pipe(takeUntil(this.stop$));
+    const middlewares = this._middlewares
+      .reduce((acc, { name, observable }) => ({ ...acc, [name]: observable }), {});
+
+    combineLatest({
+      animation: animnation$,
+      ...middlewares
+    }).subscribe({
+      next: (v) => this.run(v)
+    });
+  }
+
+  addMiddleware(middleware: Middleware) {
+    this._middlewares.push(middleware);
   }
 
   pause() {
@@ -70,16 +83,6 @@ class BallThread extends Thread {
 
     this.ballDiv.style.transform = `translate3d(${this.x}px, ${this.y}px, 0)`;
   }
-
-  public start() {
-    combineLatest({
-      animation: BallThread._broadcast,
-      containerSize: resizeHelper.size$
-    }).pipe(
-      takeUntil(this.stop$)
-    ).subscribe({
-      next: (v) => this.run(v)
-    });
-  }
 }
+
 export { Thread, BallThread };
