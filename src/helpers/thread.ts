@@ -96,6 +96,7 @@ class BallThread extends Thread {
     eventName: keyof HTMLElementEventMap, 
     callback: (divElement: HTMLDivElement, threadSelf: BallThread) => void
   ) {
+    // eslint-disable-next-line @typescript-eslint/no-this-alias
     const threadSelf = this;
     this.ballDiv.addEventListener(eventName, function() {
       callback(this, threadSelf);
