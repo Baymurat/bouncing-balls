@@ -88,6 +88,15 @@ const BallsContainer = () => {
                   ballThread.addEventListener("mouseleave", (_, threadSelf) => {
                     threadSelf.start();
                   });
+                  let i = false;
+                  ballThread.addEventListener("click", (_, threadSelf) => {
+                    if (i) {
+                      threadSelf.freeze();
+                    } else {
+                      threadSelf.unFreeze();
+                    }
+                    i = !i;
+                  });
                   ballThread.start(); 
                   addThread((threads) => [...threads, ballThread]);
                 }

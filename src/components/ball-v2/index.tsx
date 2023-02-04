@@ -1,4 +1,4 @@
-import { useEffect, PropsWithChildren } from "react";
+import { useEffect, useState, PropsWithChildren } from "react";
 import { useCustomRef } from "../../helpers/hooks";
 import styles from "./styles.module.scss";
 
