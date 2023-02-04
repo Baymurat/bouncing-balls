@@ -7,11 +7,12 @@ import { useCustomRef } from "../../helpers/hooks";
 import { Ball as BallType } from "../../types/types";
 import { animationInstance } from "../../helpers/animation";
 import BallV2 from "../ball-v2";
-import { BallThread } from "../../helpers/thread";
+import { BallThread, Thread } from "../../helpers/thread";
 
 const BallsContainer = () => {
   const [balls, setBalls] = useState<BallType[]>([]);
   const [selfRef, setSelfRef] = useCustomRef<HTMLDivElement>();
+  const [threadPool, addThread] = useState<Thread[]>([]);
 
   useEffect(() => {
     resizeHelper.emmitResize(selfRef);
@@ -41,7 +42,7 @@ const BallsContainer = () => {
       </button>
       <button
         onClick={() => {
-          animationInstance.pauseAnimation();
+          threadPool.forEach((thread) => thread.stop());
         }}
         type="button"
       >
@@ -49,7 +50,7 @@ const BallsContainer = () => {
       </button>
       <button
         onClick={() => {
-          animationInstance.resumeAnimation();
+          threadPool.forEach((thread) => thread.start());
         }}
         type="button"
       >
@@ -58,7 +59,7 @@ const BallsContainer = () => {
       <button
         onClick={() => {
           setBalls([]);
-          animationInstance.clearDesk();
+          threadPool.forEach((thread) => thread.stop());
         }}
         type="button"
       >
@@ -80,7 +81,14 @@ const BallsContainer = () => {
                     name: "containerSize",
                     observable:  resizeHelper.size$
                   });
+                  ballThread.addEventListener("mouseenter", (_, threadSelf) => {
+                    threadSelf.stop();
+                  });
+                  ballThread.addEventListener("mouseleave", (_, threadSelf) => {
+                    threadSelf.start();
+                  });
                   ballThread.start(); 
+                  addThread((threads) => [...threads, ballThread]);
                   return ballThread;
                 }
               }}

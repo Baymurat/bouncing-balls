@@ -4,6 +4,7 @@ import { combineLatest, interval, Subject, takeUntil, animationFrameScheduler } 
 abstract class Thread implements IThread {
   private static _animationInterval$ = interval(0, animationFrameScheduler);
   private _middlewares: Middleware[];
+  private _isThreadStarted: boolean;
 
   protected static _broadcast: Subject<number> = new Subject();
   static {
@@ -15,11 +16,17 @@ abstract class Thread implements IThread {
   constructor() {
     this.stop$ = new Subject<boolean>();
     this._middlewares = [];
+    this._isThreadStarted = false;
   }
 
   public abstract run(context: unknown): void;
 
   start() {
+    if (this._isThreadStarted) {
+      return;
+    }
+
+    this._isThreadStarted = true;
     const animnation$ = Thread._broadcast.pipe(takeUntil(this.stop$));
     const middlewares = this._middlewares
       .reduce((acc, { name, observable }) => ({ ...acc, [name]: observable }), {});
@@ -41,6 +48,7 @@ abstract class Thread implements IThread {
   }
 
   stop() {
+    this._isThreadStarted = false;
     this.stop$.next(true);
   }
 }
@@ -72,7 +80,7 @@ class BallThread extends Thread {
   public run(context: BallRunType) {
     const { containerSize } = context;
     
-    const { width: containerWidth = 500, height: containerHeight } = containerSize;
+    const { width: containerWidth, height: containerHeight } = containerSize;
     const { width: ballWidth, height: ballHeight } = this.ball;
 
     this.x += this.xD * this.xOffset;
@@ -82,6 +90,16 @@ class BallThread extends Thread {
     this.yD = this.y + (ballHeight as number) >= containerHeight ? -1 : this.y <= 1 ? 1 : this.yD;
 
     this.ballDiv.style.transform = `translate3d(${this.x}px, ${this.y}px, 0)`;
+  }
+
+  addEventListener(
+    eventName: keyof HTMLElementEventMap, 
+    callback: (divElement: HTMLDivElement, threadSelf: BallThread) => void
+  ) {
+    const threadSelf = this;
+    this.ballDiv.addEventListener(eventName, function() {
+      callback(this, threadSelf);
+    });
   }
 }
 
