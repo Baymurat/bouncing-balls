@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { map } from "rxjs/operators";
 import styles from "./styles.module.scss";
 import { resizeHelper } from "../../helpers/resizeHelper";
@@ -58,8 +58,9 @@ const BallsContainer = () => {
       </button>
       <button
         onClick={() => {
-          setBalls([]);
           threadPool.forEach((thread) => thread.stop());
+          setBalls([]);
+          addThread([]);
         }}
         type="button"
       >
@@ -89,7 +90,6 @@ const BallsContainer = () => {
                   });
                   ballThread.start(); 
                   addThread((threads) => [...threads, ballThread]);
-                  return ballThread;
                 }
               }}
             >

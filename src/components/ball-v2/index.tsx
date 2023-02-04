@@ -1,10 +1,9 @@
 import { useEffect, PropsWithChildren } from "react";
 import { useCustomRef } from "../../helpers/hooks";
-import { Thread } from "../../helpers/thread";
 import styles from "./styles.module.scss";
 
 type Props = PropsWithChildren & React.CSSProperties & {
-  onMount: (ref: HTMLDivElement | null) => Thread | undefined;
+  onMount: (ref: HTMLDivElement | null) => void;
 }
 
 const BallV2 = (props: Props) => {
@@ -14,9 +13,7 @@ const BallV2 = (props: Props) => {
   const [ref, setRef] = useCustomRef<HTMLDivElement>();
 
   useEffect(() => {
-    const ballThread = onMount(ref);
-    
-    return () => ballThread?.stop();
+    onMount(ref);
   }, [ref]);
 
   return (
