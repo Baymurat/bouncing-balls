@@ -27,14 +27,16 @@ abstract class Thread implements IThread {
     }
 
     this._isStarted = true;
-    const animnation$ = Thread._broadcast.pipe(takeUntil(this.stop$));
+
     const middlewares = this._middlewares
       .reduce((acc, { name, observable }) => ({ ...acc, [name]: observable }), {});
 
     combineLatest({
-      animation: animnation$,
+      animation: Thread._broadcast,
       ...middlewares
-    }).subscribe({
+    }).pipe(
+      takeUntil(this.stop$)
+    ).subscribe({
       next: (v) => this.run(v)
     });
   }

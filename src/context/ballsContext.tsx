@@ -7,8 +7,7 @@ type BallsContextType = {
   threads: Thread[];
   addBall: (ball: BallType) => void;
   addThread: (thread: Thread) => void;
-  clearBalls: () => void;
-  clearThreads: () => void;
+  clearDesk: () => void;
 }
 
 const BallsContext = React.createContext<BallsContextType | null>(null);
@@ -19,8 +18,10 @@ export const BallsContextProvider: FC<PropsWithChildren>= ({ children }) => {
 
   const addBall = (ball: BallType) => setBalls((balls) => [...balls, ball]);
   const addThread = (thread: Thread) => setThreads((threads) => [...threads, thread]);
-  const clearBalls = () => setBalls([]);
-  const clearThreads = () => setThreads([]);
+  const clearDesk = () => {
+    setBalls([]);
+    setThreads([]);
+  };
   
   return (
     <BallsContext.Provider value={{
@@ -28,8 +29,7 @@ export const BallsContextProvider: FC<PropsWithChildren>= ({ children }) => {
       threads,
       addBall,
       addThread,
-      clearBalls,
-      clearThreads,
+      clearDesk,
     }}>
       {children}
     </BallsContext.Provider>

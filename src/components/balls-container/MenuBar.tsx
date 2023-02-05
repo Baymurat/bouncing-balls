@@ -34,8 +34,7 @@ const Menubar = () => {
       <button
         onClick={() => {
           context.threads.forEach((thread) => thread.stop());
-          context.clearBalls();
-          context.clearThreads();
+          context.clearDesk();
         }}
         type="button"
       >
