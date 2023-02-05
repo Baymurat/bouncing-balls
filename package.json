@@ -5,6 +5,9 @@
   "author": "Baymurat <baymurat.orazov@mail.ru>",
   "license": "MIT",
   "dependencies": {
+    "@emotion/react": "^11.10.5",
+    "@emotion/styled": "^11.10.5",
+    "@mui/material": "^5.11.7",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "rxjs": "^7.8.0"
