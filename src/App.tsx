@@ -1,13 +1,16 @@
-import React from "react";
 import Desk from "./components/desk";
 import BallsContainer from "./components/balls-container";
+import { BallsContextProvider } from "./context/ballsContext";
+
 import "../style/style.scss";
 
 const App = () => (
   <div>
-    <Desk>
-      <BallsContainer />
-    </Desk>
+    <BallsContextProvider>
+      <Desk>
+        <BallsContainer />
+      </Desk>
+    </BallsContextProvider>
   </div>
 );
 
