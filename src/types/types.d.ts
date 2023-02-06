@@ -10,6 +10,8 @@ export type Ball = {
   id: number;
 }
 
+export type CreateBall = Omit<Ball, "id" | "height">;
+
 export type ResizeEmission = {
   width: number;
   height: number;
