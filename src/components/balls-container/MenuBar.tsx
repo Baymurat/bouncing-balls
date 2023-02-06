@@ -1,37 +1,48 @@
 import { useBallsContext } from "../../context/ballsContext";
 import { generateRandomBall } from "../../helpers/generateBall";
+import { Button } from "@mui/material";
+
+import styles from "./styles.module.scss";
 
 const Menubar = () => {
   const context = useBallsContext();
   
   return (
-    <div>
-      <button
+    <div className={styles.menubar}>
+      <Button
+        variant="contained"
+        color="success"
         onClick={() => {
           const ball = generateRandomBall();
           context.addBall(ball);
         }}
-        type="button"
       >
         Add random ball
-      </button>
-      <button
+      </Button>
+      <Button
+        classes={{textInfo: "ASDSAD"}}
+        variant="contained"
+        color="success"
         onClick={() => {
           context.threads.forEach((thread) => thread.stop());
         }}
         type="button"
       >
         Pause
-      </button>
-      <button
+      </Button>
+      <Button
+        variant="contained"
+        color="success"
         onClick={() => {
           context.threads.forEach((thread) => thread.start());
         }}
         type="button"
       >
         Resume
-      </button>
-      <button
+      </Button>
+      <Button
+        variant="contained"
+        color="success"
         onClick={() => {
           context.threads.forEach((thread) => thread.stop());
           context.clearDesk();
@@ -39,7 +50,7 @@ const Menubar = () => {
         type="button"
       >
         Clear desk
-      </button>
+      </Button>
     </div>
   );};
 
