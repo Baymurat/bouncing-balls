@@ -17,20 +17,63 @@
     width: 400px;
     height: 600px;
 
-    .closeButton {
-      position: absolute;
-      right: 10px;
-      top: 10px;
-      cursor: pointer;
-      width: 30px;
-      height: 30px;
-      border-radius: 50%;
-      background: #fff;
+    @mixin quarter($deg) {
+      width: 11px;
+      height: 11px;
+      position: relative;
+      overflow: hidden;
       display: flex;
       align-items: center;
       justify-content: center;
-      border: 1px solid black;
-      font-family: "Roboto","Helvetica","Arial",sans-serif;
+
+      &::before {
+        content: '';
+        position: absolute;
+        width: 1px;
+        height: 200%;
+        background: black;
+        transform: rotate($deg);
+      }
+    }
+
+    .closeButton {
+      width: 22px;
+      height: 22px;
+      display: flex;
+      flex-wrap: wrap;
+      position: absolute;
+      cursor: pointer;
+
+      &:hover {
+        animation: rotate-animation 0.7s ease-in-out;
+      }
+
+      .one {
+        @include quarter(-45deg);
+      }
+
+      .two {
+        @include quarter(45deg);
+      }
+
+      .three {
+        @include quarter(45deg);
+      }
+
+      .four { 
+        @include quarter(-45deg);
+      }
     }
   }
+}
+
+@keyframes rotate-animation {
+  100% {
+    transform: rotate(180deg);
+  }
+}
+
+.buttonPosition {
+  right: 20px;
+  top: 20px;
 }

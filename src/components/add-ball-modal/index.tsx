@@ -5,6 +5,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useBallsContext } from "../../context/ballsContext";
 import { createBall } from "../../helpers/generateBall";
 import { CreateBall as CreateBallType } from "../../types/types";
+import CloseButton from "./CloseButton";
 
 import * as yup from "yup";
 
@@ -53,7 +54,10 @@ const AddBallModal = () => {
         onClose={onModalClose}
       >
         <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
-          <span onClick={onModalClose} className={styles.closeButton}>X</span>
+          <CloseButton
+            className={styles.buttonPosition}
+            onClick={onModalClose}
+          />
           <Controller 
             name="speed"
             control={control}
