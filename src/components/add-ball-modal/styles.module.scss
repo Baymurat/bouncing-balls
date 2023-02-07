@@ -12,10 +12,10 @@
     justify-content: center;
     flex-direction: column;
     gap: 20px;
-    padding: 20px;
+    padding: 20px 40px;
     background: #fff;
     width: 400px;
-    height: 600px;
+    height: 550px;
 
     @mixin quarter($deg) {
       width: 11px;
@@ -74,6 +74,9 @@
 }
 
 .buttonPosition {
-  right: 20px;
-  top: 20px;
+  position: relative !important;
+  right: 0px;
+  top: 0px;
+  align-self: flex-end;
+  margin-bottom: 10px;
 }

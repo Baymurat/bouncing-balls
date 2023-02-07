@@ -62,38 +62,38 @@ const AddBallModal = () => {
             name="speed"
             control={control}
             rules={{ required: true }}
-            render={({ field }) => <TextField label='Speed' {...field} />
+            render={({ field }) => <TextField autoComplete="off" fullWidth label='Speed' {...field} />
             }
           />
           <Controller 
             name="alpha"
             control={control}
             rules={{ required: true }}
-            render={({ field }) => <TextField label="Alpha" {...field} />
+            render={({ field }) => <TextField autoComplete="off" fullWidth label="Alpha" {...field} />
             }
           />
           <Controller 
             name="width"
             control={control}
             rules={{ required: true }}
-            render={({ field }) => <TextField label="Width" {...field} />
+            render={({ field }) => <TextField autoComplete="off" fullWidth label="Width" {...field} />
             }
           />
           <Controller 
             name="color"
             control={control}
             rules={{ required: true }}
-            render={({ field }) => <TextField label="Color" {...field} />
+            render={({ field }) => <TextField autoComplete="off" fullWidth label="Color" {...field} />
             }
           />
           <Controller 
             name="word"
             control={control}
             rules={{ required: true }}
-            render={({ field }) => <TextField label="Word" {...field} />
+            render={({ field }) => <TextField autoComplete="off" fullWidth label="Word" {...field} />
             }
           />
-          <Button type="submit">Submit</Button>
+          <Button fullWidth variant="contained" type="submit">Submit</Button>
         </form>
       </Modal>
     </div>

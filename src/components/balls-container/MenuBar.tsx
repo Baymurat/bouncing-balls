@@ -35,7 +35,6 @@ const Menubar = () => {
         onClick={() => {
           context.threads.forEach((thread) => thread.stop());
         }}
-        type="button"
       >
         Pause
       </Button>
@@ -45,7 +44,6 @@ const Menubar = () => {
         onClick={() => {
           context.threads.forEach((thread) => thread.start());
         }}
-        type="button"
       >
         Resume
       </Button>
@@ -56,7 +54,6 @@ const Menubar = () => {
           context.threads.forEach((thread) => thread.stop());
           context.clearDesk();
         }}
-        type="button"
       >
         Clear desk
       </Button>

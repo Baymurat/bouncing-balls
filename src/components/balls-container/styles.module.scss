@@ -1,6 +1,8 @@
 .container {
+  display: flex;
+  flex-direction: column;
   width: 70%;
-  height: 50%;
+  height: 90%;
 }
 
 .ballsContainer {
@@ -15,6 +17,11 @@
   display: flex;
   gap: 10px;
   padding: 10px 0;
+  justify-content: space-between;
+
+  button {
+    flex: 1;
+  }
 }
 
 @media screen and (max-width: 600px)  {
