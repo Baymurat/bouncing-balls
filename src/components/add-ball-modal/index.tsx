@@ -37,6 +37,10 @@ const AddBallModal = () => {
 
   const onSubmit: SubmitHandler<CreateBallType> = (data) => {
     addBall(createBall(data));
+    onModalClose();
+  };
+
+  const onModalClose = () => {
     closeModal();
     reset();
   };
@@ -46,12 +50,10 @@ const AddBallModal = () => {
       <Modal
         className={styles.addBallModal}
         open={isShown}
-        onClose={() => {
-          closeModal();
-          reset();
-        }}
+        onClose={onModalClose}
       >
         <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
+          <span onClick={onModalClose} className={styles.closeButton}>X</span>
           <Controller 
             name="speed"
             control={control}

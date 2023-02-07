@@ -6,6 +6,7 @@
   justify-content: center;
 
   .form {
+    position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -15,5 +16,21 @@
     background: #fff;
     width: 400px;
     height: 600px;
+
+    .closeButton {
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      cursor: pointer;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid black;
+      font-family: "Roboto","Helvetica","Arial",sans-serif;
+    }
   }
 }
