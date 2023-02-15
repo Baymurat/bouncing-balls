@@ -1,5 +1,5 @@
 import { Modal, Button, TextField } from "@mui/material";
-import { useAddBallModalContext} from "../../context/addBallModalContext";
+import { useAddBallModalContext } from "../../context/addBallModalContext";
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useBallsContext } from "../../context/ballsContext";
@@ -58,35 +58,35 @@ const AddBallModal = () => {
             className={styles.buttonPosition}
             onClick={onModalClose}
           />
-          <Controller 
+          <Controller
             name="speed"
             control={control}
             rules={{ required: true }}
             render={({ field }) => <TextField autoComplete="off" fullWidth label='Speed' {...field} />
             }
           />
-          <Controller 
+          <Controller
             name="alpha"
             control={control}
             rules={{ required: true }}
             render={({ field }) => <TextField autoComplete="off" fullWidth label="Alpha" {...field} />
             }
           />
-          <Controller 
+          <Controller
             name="width"
             control={control}
             rules={{ required: true }}
             render={({ field }) => <TextField autoComplete="off" fullWidth label="Width" {...field} />
             }
           />
-          <Controller 
+          <Controller
             name="color"
             control={control}
             rules={{ required: true }}
             render={({ field }) => <TextField autoComplete="off" fullWidth label="Color" {...field} />
             }
           />
-          <Controller 
+          <Controller
             name="word"
             control={control}
             rules={{ required: true }}
@@ -97,6 +97,7 @@ const AddBallModal = () => {
         </form>
       </Modal>
     </div>
-  );};
+  );
+};
 
 export default AddBallModal;
